@@ -41,4 +41,28 @@ class TeamTest extends TestCase
        
    } 
 
+   /** @test */
+   public function it_has_maximum_size()
+   {
+       //Arrange
+       $team = factory(Team::class)->create(['size' => 2]);
+   
+       $userOne = factory(User::class)->create(); 
+       $userTwo = factory(User::class)->create(); 
+
+       $team->addMember($userOne);
+       $team->addMember($userTwo);
+       
+       $this->expectException(\Exception::class);
+       
+       //Act
+       $userThree = factory(User::class)->create();
+       $team->addMember($userThree);
+       
+       //Assert
+    //    $this->assertEquals(2, $team->count());
+       
+       
+   }
+
 }
