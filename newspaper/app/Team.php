@@ -28,10 +28,23 @@ class Team extends Model
         return $this->members()->count();
     }
 
+    public function discharge($user)
+    {
+        $user->team()->dissociate()->save();
+    }
+
+    public function dismissAllMembers()
+    {
+        $this->members()->get()->each( function($user) {
+            $this->discharge($user);
+        });
+    }
+
     protected function guardAgainstTooManyMembers()
     {
         if($this->count() >= $this->size) {
             throw new \Exception;
         }
     }
+
 }
