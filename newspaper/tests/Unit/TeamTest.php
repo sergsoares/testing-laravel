@@ -58,6 +58,21 @@ class TeamTest extends TestCase
    }
 
    /** @test */
+   public function when_add_more_members_than_maximum_size_of_team()
+   {
+       //Arrange
+       $team = factory(Team::class)->create();
+       $users = factory(User::class, 10)->create();
+   
+       //Assert 
+       $this->expectException(\Exception::class);
+       
+       //Act
+       $team->addMember($users);
+       
+   }
+
+   /** @test */
    public function it_has_maximum_size()
    {
        //Arrange

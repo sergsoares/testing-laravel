@@ -13,7 +13,7 @@ class Team extends Model
     public function addMember($user)
     {
         
-        $this->guardAgainstTooManyMembers();
+        $this->guardAgainstTooManyMembers($user);
 
         $method = $user instanceof User ? 'save' : 'saveMany';
         
@@ -30,6 +30,11 @@ class Team extends Model
         return $this->members()->count();
     }
 
+    public function maximumSize()
+    {
+        return $this->size;
+    }
+
     public function discharge($user)
     {
         $user->team()->dissociate()->save();
@@ -42,9 +47,11 @@ class Team extends Model
         });
     }
 
-    protected function guardAgainstTooManyMembers()
+    protected function guardAgainstTooManyMembers($users)
     {
-        if($this->count() >= $this->size) {
+        $userQuantity = $this->count() + count($users);
+
+        if($userQuantity > $this->maximumSize()) {
             throw new \Exception;
         }
     }
