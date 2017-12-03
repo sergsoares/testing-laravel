@@ -42,6 +42,22 @@ class TeamTest extends TestCase
    } 
 
    /** @test */
+   public function it_can_add_more_than_a_member_at_once()
+   {
+       //Arrange
+       $team = factory(Team::class)->create();
+
+       $users = factory(User::class, 2)->create();
+
+       //Act
+       $team->addMember($users);
+   
+       //Assert
+       $this->assertEquals(2, $team->count());
+       
+   }
+
+   /** @test */
    public function it_has_maximum_size()
    {
        //Arrange
@@ -60,7 +76,7 @@ class TeamTest extends TestCase
        $team->addMember($userThree);
        
        //Assert
-    //    $this->assertEquals(2, $team->count());
+       $this->assertEquals(2, $team->count());
        
        
    }
@@ -101,8 +117,7 @@ class TeamTest extends TestCase
    
        //Assert
        $this->assertEquals(0, $team->count());
-    //    $this->assertEquals($user1, \App\User::find($user1->id));
+       $this->assertEquals($user1->id, \App\User::find($user1->id)->id);
    }
-
 }
 
