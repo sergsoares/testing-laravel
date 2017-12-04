@@ -12,31 +12,25 @@ class LikeTest extends TestCase
 
     use RefreshDatabase;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->signIn();
+    }
+
     /** @test */
     public function a_user_can_like_a_post()
     {
-        //Arrange
-
-        // Given i have a post
-
         $post = factory(Post::class)->create();
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $post->like($this->user);
 
-        $post->like($user);
-
-    
-        //Assert
-        // then we should see evidence in the database, and the post
-        // should be liked.
         $this->assertDatabaseHas('likes', [
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'likeable_id' => $post->id,
             'likeable_type' => get_class($post)
         ]);
 
         $this->assertTrue($post->isLiked());
-        
     }
 
     /** @test */
@@ -47,9 +41,7 @@ class LikeTest extends TestCase
         // have a post
         // a User
         // that is logged
-        $user = factory(User::class)->create();
         $post = factory(Post::class)->create();
-        $this->actingAs($user);
 
         // When him like a post and after
         //dislike the post
@@ -58,7 +50,7 @@ class LikeTest extends TestCase
 
         // Then doesnt exists likes by that user
         $this->assertDatabaseMissing('likes',[
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'likeable_id' => $post->id,
             'likeable_type' => get_class($post)
         ]);
@@ -72,9 +64,7 @@ class LikeTest extends TestCase
         //Given an post
         // And a user
         // and this user is logged
-        $user = factory(User::class)->create();
         $post = factory(Post::class)->create();
-        $this->actingAs($user);
 
 
         //Act
@@ -92,9 +82,7 @@ class LikeTest extends TestCase
     public function a_post_know_how_many_likes_it_has()
     {
         //Arrange
-        $user = factory(User::class)->create();
         $post = factory(Post::class)->create();
-        $this->actingAs($user);
    
         //Act
         $post->toggle();
@@ -103,5 +91,7 @@ class LikeTest extends TestCase
         $this->assertEquals(1, $post->likesCount());
         
     }
+
+
 }
 
