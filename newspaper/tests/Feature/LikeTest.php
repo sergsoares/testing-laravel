@@ -11,11 +11,14 @@ class LikeTest extends TestCase
 {
 
     use RefreshDatabase;
+    
+    protected $post;
 
     public function setUp()
     {
         parent::setUp();
         $this->signIn();
+        $this->post = createPost();
     }
 
     /** @test */
@@ -66,9 +69,9 @@ class LikeTest extends TestCase
     /** @test */
     public function a_post_know_how_many_likes_it_has()
     {
-        $post->toggle();
+        $this->post->toggle();
 
-        $this->assertEquals(1, $post->likesCount());
+        $this->assertEquals(1, $this->post->likesCount());
     }
 }
 

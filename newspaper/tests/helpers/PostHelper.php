@@ -3,5 +3,5 @@
 
 function createPost(array $attributes = [])
 {
-    return factory(Post::class)->create($attributes);
+    return factory(\App\Post::class)->create($attributes);
 }
