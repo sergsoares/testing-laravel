@@ -65,4 +65,43 @@ class LikeTest extends TestCase
 
         $this->assertFalse($post->isliked());
     }
+
+    /** @test */
+    public function a_user_may_toggle_a_post_like_status()
+    {
+        //Given an post
+        // And a user
+        // and this user is logged
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->create();
+        $this->actingAs($user);
+
+
+        //Act
+        //When him toogle a post it is liked
+        //And if him toogle again it is unliked
+        //Each togle make the posted like and Disliked
+
+        $post->toggle();
+        $this->assertTrue($post->isLiked());
+        $post->toggle();
+        $this->assertFalse($post->isLiked());
+    } 
+
+    /** @test */
+    public function a_post_know_how_many_likes_it_has()
+    {
+        //Arrange
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->create();
+        $this->actingAs($user);
+   
+        //Act
+        $post->toggle();
+    
+        //Assert
+        $this->assertEquals(1, $post->likesCount());
+        
+    }
 }
+
