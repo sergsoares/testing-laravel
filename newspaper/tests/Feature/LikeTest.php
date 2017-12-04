@@ -54,8 +54,8 @@ class LikeTest extends TestCase
     /** @test */
     public function a_user_may_toggle_a_post_like_status()
     {
-        $post = factory(Post::class)->create();
 
+        $post = createPost();
         $post->toggle();
         $this->assertTrue($post->isLiked());
 
@@ -67,7 +67,7 @@ class LikeTest extends TestCase
     public function a_post_know_how_many_likes_it_has()
     {
         $post->toggle();
-    
+
         $this->assertEquals(1, $post->likesCount());
     }
 }
