@@ -37,18 +37,11 @@ class LikeTest extends TestCase
     public function a_use_can_dislike_a_post()
     {
        
-        //Given the situation than
-        // have a post
-        // a User
-        // that is logged
         $post = factory(Post::class)->create();
 
-        // When him like a post and after
-        //dislike the post
         $post->like();
         $post->dislike();
 
-        // Then doesnt exists likes by that user
         $this->assertDatabaseMissing('likes',[
             'user_id' => $this->user->id,
             'likeable_id' => $post->id,
@@ -61,19 +54,11 @@ class LikeTest extends TestCase
     /** @test */
     public function a_user_may_toggle_a_post_like_status()
     {
-        //Given an post
-        // And a user
-        // and this user is logged
         $post = factory(Post::class)->create();
-
-
-        //Act
-        //When him toogle a post it is liked
-        //And if him toogle again it is unliked
-        //Each togle make the posted like and Disliked
 
         $post->toggle();
         $this->assertTrue($post->isLiked());
+
         $post->toggle();
         $this->assertFalse($post->isLiked());
     } 
@@ -81,17 +66,9 @@ class LikeTest extends TestCase
     /** @test */
     public function a_post_know_how_many_likes_it_has()
     {
-        //Arrange
-        $post = factory(Post::class)->create();
-   
-        //Act
         $post->toggle();
     
-        //Assert
         $this->assertEquals(1, $post->likesCount());
-        
     }
-
-
 }
 
